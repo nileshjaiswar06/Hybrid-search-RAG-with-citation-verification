@@ -4,7 +4,7 @@ from pathlib import Path
 
 import fitz
 
-from app.injestion.models import PageContent, ParsedDocument
+from app.ingestion.models import PageContent, ParsedDocument
 
 def normalize_text(text: str) -> str:
     """Normalize extracted PDF text without changing its meaning."""

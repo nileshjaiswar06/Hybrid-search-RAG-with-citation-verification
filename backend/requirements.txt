@@ -16,3 +16,4 @@ pytest
 pytest-asyncio
 
 pymupdf
+reportlab
