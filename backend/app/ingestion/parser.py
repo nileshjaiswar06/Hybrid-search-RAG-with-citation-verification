@@ -38,6 +38,7 @@ class PDFParser:
                     metadata={
                         "width": page.rect.width,
                         "height": page.rect.height,
+                        # "has_text": bool(text.strip()),
                     },
                 )
             )

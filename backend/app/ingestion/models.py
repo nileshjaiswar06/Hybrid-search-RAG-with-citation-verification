@@ -19,3 +19,10 @@ class ParsedDocument:
     file_hash: str
     created_at: datetime
     pages: list[PageContent]
+
+@dataclass
+class IngestionStats:
+    page_count: int
+    non_empty_pages: int
+    empty_pages: int
+    character_count: int
