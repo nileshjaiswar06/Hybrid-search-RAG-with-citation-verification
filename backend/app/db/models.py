@@ -7,6 +7,7 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    JSON
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -99,10 +100,81 @@ class Page(Base):
         back_populates="pages",
     )
 
+    chunks: Mapped[list["Chunk"]] = relationship(
+        back_populates="page",
+        cascade="all, delete-orphan",
+    )
+
     __table_args__ = (
         UniqueConstraint(
             "document_id",
             "page_number",
             name="uq_document_page",
+        ),
+    )
+
+class Chunk(Base):
+    __tablename__ = "chunks"
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True,
+        autoincrement=True,
+    )
+
+    document_id: Mapped[int] = mapped_column(
+        ForeignKey(
+            "documents.id",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    page_id: Mapped[int] = mapped_column(
+        ForeignKey(
+            "pages.id",
+            ondelete="CASCADE",
+        ),
+        nullable=False,
+        index=True,
+    )
+
+    chunk_index: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    text: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+
+    start_char: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    end_char: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    metadata_json: Mapped[dict] = mapped_column(
+        JSON,
+        nullable=False,
+        default=dict,
+    )
+
+    page: Mapped["Page"] = relationship(
+        back_populates="chunks"
+    )
+
+    document: Mapped["Document"] = relationship()
+
+    __table_args__ = (
+        UniqueConstraint(
+            "page_id",
+            "chunk_index",
+            name="uq_page_chunk",
         ),
     )

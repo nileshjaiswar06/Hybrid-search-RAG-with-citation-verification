@@ -13,6 +13,9 @@ class Settings(BaseSettings):
 
     log_level: str = "INFO"
 
+    chunk_target_chars: int = 2800
+    chunk_overlap_chars: int = 400
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
