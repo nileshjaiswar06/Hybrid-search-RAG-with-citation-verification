@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     DateTime,
@@ -66,6 +66,31 @@ class Document(Base):
     pages: Mapped[list["Page"]] = relationship(
         back_populates="document",
         cascade="all, delete-orphan",
+    )
+
+    department: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+        index=True,
+    )
+
+    year: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+        index=True,
+    )
+
+    language: Mapped[str | None] = mapped_column(
+        String(16),
+        nullable=True,
+        index=True,
+    )
+
+    tags: Mapped[list] = mapped_column(
+        JSON,
+        nullable=False,
+        default=list,
+        server_default="[]"
     )
 
 
@@ -170,6 +195,17 @@ class Chunk(Base):
     )
 
     document: Mapped["Document"] = relationship()
+
+    chunking_version: Mapped[str] = mapped_column(
+        String(32),
+        nullable=False,
+        default="v1",
+    )
+
+    indexed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+    )
 
     __table_args__ = (
         UniqueConstraint(

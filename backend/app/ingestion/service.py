@@ -7,13 +7,15 @@ from app.db.repositories import DocumentRepository
 from app.ingestion.loader import PDFLoader
 from app.ingestion.models import ParsedDocument
 from app.ingestion.parser import PDFParser
+from app.chunking.service import ChunkingService
 
 class IngestionService:
     """Coordinates document loading and parsing."""
 
-    def __init__( self, loader: PDFLoader | None = None, parser: PDFParser | None = None ):
+    def __init__( self, loader: PDFLoader | None = None, parser: PDFParser | None = None, chunking_service: ChunkingService | None = None ):
         self.loader = loader or PDFLoader()
         self.parser = parser or PDFParser()
+        self.chunking_service = chunking_service or ChunkingService()
 
     def ingest( self, file_path: str | Path ) -> ParsedDocument:
         path = Path(file_path)
@@ -46,6 +48,10 @@ class IngestionService:
             file_size=parsed_document.file_size,
             page_count=parsed_document.page_count,
             created_at=parsed_document.created_at,
+            department=None,
+            year=None,
+            language=None,
+            tags=[],
         )
 
         repository.create(document)
@@ -64,5 +70,7 @@ class IngestionService:
 
     def ingest_and_persist( self, file_path: str | Path, db: Session ) -> Document:
         parsed_document = self.ingest(file_path)
+        document = self.persist(parsed_document,db)
+        self.chunking_service.chunk_document(document, db)
 
-        return self.persist( parsed_document, db )
+        return document
