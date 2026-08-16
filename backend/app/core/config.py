@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-2.5-flash"
     gemini_embedding_model: str = "gemini-embedding-2"
     embedding_dimensions: int = 768 
+    dense_retrieval_default_top_k: int = 5
 
     log_level: str = "INFO"
 

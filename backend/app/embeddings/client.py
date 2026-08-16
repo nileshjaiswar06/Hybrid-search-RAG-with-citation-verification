@@ -8,11 +8,22 @@ from app.core.config import settings
 
 class EmbeddingClient(Protocol):
     """Small interface that keeps the provider replaceable and testable."""
+
     def embed_documents(self, texts: Sequence[str]) -> list[list[float]]: ...
+    def embed_queries(self, queries: Sequence[str]) -> list[list[float]]: ...
 
 def prepare_document(text: str, title: str | None = None) -> str:
-    """Apply the retrieval-document format recommended for Embedding 2."""
+    """Format a chunk as a Gemini Embedding 2 retrieval document."""
     return f"title: {title or 'none'} | text: {text}"
+
+def prepare_query(query: str) -> str:
+    """Format a user question as a Gemini Embedding 2 search query."""
+    cleaned_query = query.strip()
+
+    if not cleaned_query:
+        raise ValueError("Query cannot be empty.")
+
+    return f"task: search result | query: {cleaned_query}"
 
 class GeminiEmbeddingClient:
     def __init__(self, *, api_key: str | None = None) -> None:
@@ -24,6 +35,13 @@ class GeminiEmbeddingClient:
         self.client = genai.Client(api_key=key)
 
     def embed_documents(self, texts: Sequence[str]) -> list[list[float]]:
+        return self._embed(texts)
+
+    def embed_queries(self, queries: Sequence[str]) -> list[list[float]]:
+        formatted_queries = [prepare_query(query) for query in queries]
+        return self._embed(formatted_queries)
+
+    def _embed(self, texts: Sequence[str]) -> list[list[float]]:
         if not texts:
             return []
 
