@@ -11,6 +11,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from pgvector.sqlalchemy import Vector
+
 from app.db.database import Base
 
 class Document(Base):
@@ -205,6 +207,7 @@ class Chunk(Base):
     indexed_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,
+        default=lambda: datetime.now(timezone.utc)
     )
 
     __table_args__ = (
@@ -214,3 +217,25 @@ class Chunk(Base):
             name="uq_page_chunk",
         ),
     )
+
+class ChunkEmbedding(Base):
+    """The current dense representation for one chunk."""
+
+    __tablename__ = "chunk_embeddings"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+    chunk_id: Mapped[int] = mapped_column(
+        ForeignKey("chunks.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=False)
+    model_name: Mapped[str] = mapped_column(String(128), nullable=False)
+    dimensions: Mapped[int] = mapped_column(Integer, nullable=False)
+    content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    chunk: Mapped["Chunk"] = relationship()

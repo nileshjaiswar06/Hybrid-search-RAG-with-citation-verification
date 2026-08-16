@@ -17,3 +17,6 @@ pytest-asyncio
 
 pymupdf
 reportlab
+
+google-genai
+pgvector
