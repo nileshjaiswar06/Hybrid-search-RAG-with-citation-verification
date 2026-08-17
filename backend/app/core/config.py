@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 768 
     dense_retrieval_default_top_k: int = 5
 
+    bm25_default_top_k: int = 5
+    bm25_k1: float = 1.5
+    bm25_b: float = 0.75
+
     log_level: str = "INFO"
 
     chunk_target_chars: int = 2800

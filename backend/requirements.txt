@@ -20,3 +20,5 @@ reportlab
 
 google-genai
 pgvector
+
+rank-bm25
