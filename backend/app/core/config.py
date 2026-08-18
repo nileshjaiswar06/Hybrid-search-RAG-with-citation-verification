@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     bm25_k1: float = 1.5
     bm25_b: float = 0.75
 
+    hybrid_default_top_k: int = 5
+    hybrid_candidate_k: int = 20
+    rrf_k: int = 60
+
     log_level: str = "INFO"
 
     chunk_target_chars: int = 2800
