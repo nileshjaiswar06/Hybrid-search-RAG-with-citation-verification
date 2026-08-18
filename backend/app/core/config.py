@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     hybrid_candidate_k: int = 20
     rrf_k: int = 60
 
+    reranker_model: str = "cross-encoder/ms-marco-MiniLM-L6-v2"
+    reranker_candidate_k: int = 20
+    reranker_default_top_k: int = 5
+    reranker_batch_size: int = 16
+    reranker_max_length: int = 512
+
     log_level: str = "INFO"
 
     chunk_target_chars: int = 2800

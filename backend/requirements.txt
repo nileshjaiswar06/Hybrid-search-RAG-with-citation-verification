@@ -22,3 +22,5 @@ google-genai
 pgvector
 
 rank-bm25
+
+sentence-transformers

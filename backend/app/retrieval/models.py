@@ -24,3 +24,19 @@ class HybridRetrievedChunk:
     dense_rank: int | None
     bm25_rank: int | None
     retrieved_by: tuple[str, ...]
+
+@dataclass(frozen=True)
+class RerankedChunk:
+    """A hybrid candidate reordered by a cross-encoder."""
+    chunk_id: int
+    document_id: int
+    filename: str
+    page_number: int
+    chunk_index: int
+    text: str
+    reranker_score: float
+    hybrid_rank: int
+    rrf_score: float
+    dense_rank: int | None
+    bm25_rank: int | None
+    retrieved_by: tuple[str, ...]
