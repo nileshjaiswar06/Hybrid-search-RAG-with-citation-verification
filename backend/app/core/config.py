@@ -8,7 +8,8 @@ class Settings(BaseSettings):
 
     database_url: str
 
-    gemini_api_key: str = ""
+    # BaseSettings reads GEMINI_API_KEY from the configured .env file.
+    gemini_api_key: str
     gemini_model: str = "gemini-2.5-flash"
     gemini_embedding_model: str = "gemini-embedding-2"
     embedding_dimensions: int = 768 
@@ -27,6 +28,11 @@ class Settings(BaseSettings):
     reranker_default_top_k: int = 5
     reranker_batch_size: int = 16
     reranker_max_length: int = 512
+
+    generation_context_top_k: int = 5
+    generation_context_max_chars: int = 12000
+    generation_max_output_tokens: int = 600
+    generation_temperature: float = 0.2
 
     log_level: str = "INFO"
 
