@@ -91,7 +91,6 @@ def test_resolve_citations_requires_at_least_one_citation():
             require_citations=True,
         )
 
-
 def test_no_answer_can_have_no_citations():
     context = ContextBuilder(max_chars=2000).build([
         make_chunk(10, "policy.pdf", 3),
