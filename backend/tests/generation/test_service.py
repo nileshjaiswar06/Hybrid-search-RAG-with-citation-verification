@@ -37,7 +37,7 @@ class FakeGenerator:
         return self.answer
 
 def test_generation_uses_context_and_returns_answer():
-    generator = FakeGenerator("Employees need strong passwords.")
+    generator = FakeGenerator("Employees need strong passwords. [1]")
 
     service = GenerationService(
         reranking_service=FakeRerankingService([
@@ -52,10 +52,15 @@ def test_generation_uses_context_and_returns_answer():
         db=object(),
     )
 
-    assert result.answer == "Employees need strong passwords."
+    assert result.answer == "Employees need strong passwords. [1]"
     assert len(result.context.chunks) == 1
     assert "What is the password rule?" in generator.prompts[0]
     assert "Employees must use strong passwords." in generator.prompts[0]
+    assert len(result.citations) == 1
+    assert result.citations[0].label == 1
+    assert result.citations[0].chunk_id == 1
+    assert result.citations[0].filename == "policy.pdf"
+    assert result.citations[0].page_number == 3
 
 def test_generation_returns_no_answer_without_context():
     generator = FakeGenerator("This should not be used.")

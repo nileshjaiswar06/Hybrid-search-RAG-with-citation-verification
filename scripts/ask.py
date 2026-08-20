@@ -26,17 +26,21 @@ def main() -> None:
         print("\nAnswer:")
         print(result.answer)
 
-        print("\nRetrieved context trace (debug only):")
+        print("\nCitations:")
+
+        if not result.citations:
+            print("No citations.")
+
+        for citation in result.citations:
+            print(
+                f"[{citation.label}] "
+                f"{citation.filename}, "
+                f"page {citation.page_number}, "
+                f"chunk {citation.chunk_id}"
+            )
 
         if not result.context.chunks:
             print("No retrieved chunks.")
-
-        for rank, chunk in enumerate(result.context.chunks, start=1):
-            print(
-                f"{rank}. {chunk.filename} | "
-                f"page {chunk.page_number} | "
-                f"chunk {chunk.chunk_id}"
-            )
 
     finally:
         db.close()

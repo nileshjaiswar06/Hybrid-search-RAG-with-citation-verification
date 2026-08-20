@@ -24,7 +24,8 @@ class ContextBuilder:
 
         for rank, chunk in enumerate(chunks, start=1):
             header = (
-                f'<document rank="{rank}" '
+                f'<document citation_id="{rank}" '
+                f'rank="{rank}" '
                 f'chunk_id="{chunk.chunk_id}" '
                 f'source="{escape(chunk.filename)}" '
                 f'page="{chunk.page_number}">\n'

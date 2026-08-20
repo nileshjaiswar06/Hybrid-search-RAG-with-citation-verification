@@ -7,6 +7,7 @@ from app.generation.client import GeminiTextGenerator, TextGenerator
 from app.generation.context import ContextBuilder
 from app.generation.models import BuiltContext, GeneratedAnswer
 from app.reranking.service import RerankingService
+from app.generation.citations import resolve_citations
 
 NO_ANSWER = "I don't know based on the provided documents."
 
@@ -51,9 +52,39 @@ class GenerationService:
 
         answer = self.generator.generate(prompt)
 
+        try:
+            citations = resolve_citations(
+                answer,
+                context,
+                require_citations=(answer != NO_ANSWER),
+            )
+        except RuntimeError:
+            repair_prompt = f"""
+        Rewrite the draft answer below.
+
+        Use only the retrieved documents already provided.
+        Keep only claims supported by those documents.
+        Add valid citations immediately after each factual claim, using only
+        the available labels [1] through [{len(context.chunks)}].
+        Return only the revised answer.
+
+        <draft_answer>
+        {answer}
+        </draft_answer>
+        """.strip()
+
+            answer = self.generator.generate(repair_prompt)
+
+            citations = resolve_citations(
+                answer,
+                context,
+                require_citations=(answer != NO_ANSWER),
+            )
+
         return GeneratedAnswer(
             answer=answer,
             context=context,
+            citations=citations,
         )
 
     @staticmethod

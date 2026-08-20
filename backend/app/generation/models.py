@@ -9,7 +9,18 @@ class BuiltContext:
     chunks: tuple[RerankedChunk, ...]
 
 @dataclass(frozen=True)
+class Citation:
+    """A validated citation mapped to a real context chunk."""
+    label: int
+    chunk_id: int
+    document_id: int
+    filename: str
+    page_number: int
+    chunk_index: int
+
+@dataclass(frozen=True)
 class GeneratedAnswer:
-    """Grounded answer plus the evidence trace used to produce it."""
+    """Grounded answer, source context, and validated citations."""
     answer: str
     context: BuiltContext
+    citations: tuple[Citation, ...] = ()
