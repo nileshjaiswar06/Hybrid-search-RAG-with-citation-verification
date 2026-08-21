@@ -68,6 +68,10 @@ class GenerationService:
         the available labels [1] through [{len(context.chunks)}].
         Return only the revised answer.
 
+        <retrieved_documents>
+        {context.text}
+        </retrieved_documents>
+
         <draft_answer>
         {answer}
         </draft_answer>

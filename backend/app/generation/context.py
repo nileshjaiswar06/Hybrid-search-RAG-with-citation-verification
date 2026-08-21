@@ -20,6 +20,7 @@ class ContextBuilder:
     def build(self, chunks: Sequence[RerankedChunk]) -> BuiltContext:
         context_parts: list[str] = []
         included_chunks: list[RerankedChunk] = []
+        included_excerpts: list[str] = []
         used_chars = 0
 
         for rank, chunk in enumerate(chunks, start=1):
@@ -57,6 +58,7 @@ class ContextBuilder:
 
             context_parts.append(part)
             included_chunks.append(chunk)
+            included_excerpts.append(excerpt)
             used_chars += len(part)
 
             if used_chars >= self.max_chars:
@@ -65,4 +67,5 @@ class ContextBuilder:
         return BuiltContext(
             text="\n\n".join(context_parts),
             chunks=tuple(included_chunks),
+            excerpts=tuple(included_excerpts)
         )

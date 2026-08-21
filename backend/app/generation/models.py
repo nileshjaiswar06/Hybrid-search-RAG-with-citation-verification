@@ -7,6 +7,7 @@ class BuiltContext:
     """The exact evidence passed to the generation model."""
     text: str
     chunks: tuple[RerankedChunk, ...]
+    excerpts: tuple[str, ...] = ()
 
 @dataclass(frozen=True)
 class Citation:

@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     generation_max_output_tokens: int = 600
     generation_temperature: float = 0.2
 
+    verification_model: str = "gemini-2.5-flash"
+    verification_max_output_tokens: int = 200       
+
     log_level: str = "INFO"
 
     chunk_target_chars: int = 2800
