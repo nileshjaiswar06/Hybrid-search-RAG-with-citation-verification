@@ -1,0 +1,59 @@
+{
+  "case_count": 3,
+  "abstention_accuracy": 0.6666666666666666,
+  "automated_citation_support_rate": 1.0,
+  "verification_status_counts": {
+    "SUPPORTED": 2
+  },
+  "cases": [
+    {
+      "case_id": "password_requirements",
+      "question": "What are the password requirements for employees?",
+      "answerable": true,
+      "answer": "Based on the provided documents, the password requirements for employees are:\n\n* **Rotation:** Passwords must be rotated at least every 180 days [1][2].",
+      "citation_count": 2,
+      "abstained": false,
+      "abstention_correct": true,
+      "verifications": [
+        {
+          "claim": "Based on the provided documents, the password requirements for employees are:\n\n* **Rotation:** Passwords must be rotated at least every 180 days",
+          "citation_label": 1,
+          "source": "security_policy.pdf",
+          "page_number": 4,
+          "chunk_id": 60,
+          "status": "SUPPORTED",
+          "rationale": "The evidence states under 'Section 4.2 \u2014 Password Requirements' that 'Passwords must be rotated at least every 180 days', which directly supports the claim."
+        },
+        {
+          "claim": "Based on the provided documents, the password requirements for employees are:\n\n* **Rotation:** Passwords must be rotated at least every 180 days",
+          "citation_label": 2,
+          "source": "employee_handbook.pdf",
+          "page_number": 11,
+          "chunk_id": 53,
+          "status": "SUPPORTED",
+          "rationale": "The evidence states that \"All employees must ... rotate passwords at least every 180 days.\""
+        }
+      ]
+    },
+    {
+      "case_id": "confidential_information",
+      "question": "How should confidential information be handled?",
+      "answerable": true,
+      "answer": "I don't know based on the provided documents.",
+      "citation_count": 0,
+      "abstained": true,
+      "abstention_correct": false,
+      "verifications": []
+    },
+    {
+      "case_id": "unsupported_vacation_policy",
+      "question": "Does the company offer unlimited vacation?",
+      "answerable": false,
+      "answer": "I don't know based on the provided documents.",
+      "citation_count": 0,
+      "abstained": true,
+      "abstention_correct": true,
+      "verifications": []
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "password_requirements",
+    "question": "What are the password requirements for employees?",
+    "relevant_chunk_ids": [60],
+    "answerable": true
+  },
+  {
+    "id": "confidential_information",
+    "question": "How should confidential information be handled?",
+    "relevant_chunk_ids": [60],
+    "answerable": true
+  },
+  {
+    "id": "unsupported_vacation_policy",
+    "question": "Does the company offer unlimited vacation?",
+    "relevant_chunk_ids": [],
+    "answerable": false
+  }
+]

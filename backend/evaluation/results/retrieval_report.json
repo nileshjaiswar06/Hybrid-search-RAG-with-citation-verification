@@ -1,0 +1,195 @@
+{
+  "dataset_size": 3,
+  "answerable_case_count": 2,
+  "top_k": 5,
+  "systems": {
+    "dense": {
+      "system": "dense",
+      "summary": {
+        "precision_at_5": 0.0,
+        "recall_at_5": 0.0,
+        "mrr_at_5": 0.0,
+        "ndcg_at_5": 0.0,
+        "average_latency_ms": 1801.4
+      },
+      "queries": [
+        {
+          "case_id": "password_requirements",
+          "question": "What are the password requirements for employees?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [],
+          "latency_ms": 1702.63,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_5": 0.0
+        },
+        {
+          "case_id": "confidential_information",
+          "question": "How should confidential information be handled?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [],
+          "latency_ms": 1900.17,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0.0,
+          "ndcg_at_5": 0.0
+        }
+      ]
+    },
+    "bm25": {
+      "system": "bm25",
+      "summary": {
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.625,
+        "ndcg_at_5": 0.7153382790366966,
+        "average_latency_ms": 0.38
+      },
+      "queries": [
+        {
+          "case_id": "password_requirements",
+          "question": "What are the password requirements for employees?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            60,
+            53,
+            59,
+            61,
+            51
+          ],
+          "latency_ms": 0.49,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_5": 1.0
+        },
+        {
+          "case_id": "confidential_information",
+          "question": "How should confidential information be handled?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            47,
+            52,
+            62,
+            60,
+            63
+          ],
+          "latency_ms": 0.27,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 0.25,
+          "ndcg_at_5": 0.43067655807339306
+        }
+      ]
+    },
+    "hybrid": {
+      "system": "hybrid",
+      "summary": {
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.625,
+        "ndcg_at_5": 0.7153382790366966,
+        "average_latency_ms": 1561.57
+      },
+      "queries": [
+        {
+          "case_id": "password_requirements",
+          "question": "What are the password requirements for employees?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            60,
+            53,
+            59,
+            61,
+            51
+          ],
+          "latency_ms": 2181.88,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_5": 1.0
+        },
+        {
+          "case_id": "confidential_information",
+          "question": "How should confidential information be handled?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            47,
+            52,
+            62,
+            60,
+            63
+          ],
+          "latency_ms": 941.25,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 0.25,
+          "ndcg_at_5": 0.43067655807339306
+        }
+      ]
+    },
+    "reranked": {
+      "system": "reranked",
+      "summary": {
+        "precision_at_5": 0.2,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "ndcg_at_5": 1.0,
+        "average_latency_ms": 3000.56
+      },
+      "queries": [
+        {
+          "case_id": "password_requirements",
+          "question": "What are the password requirements for employees?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            60,
+            53,
+            61,
+            59,
+            63
+          ],
+          "latency_ms": 4497.39,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_5": 1.0
+        },
+        {
+          "case_id": "confidential_information",
+          "question": "How should confidential information be handled?",
+          "relevant_chunk_ids": [
+            60
+          ],
+          "retrieved_chunk_ids": [
+            60,
+            62,
+            47,
+            53,
+            61
+          ],
+          "latency_ms": 1503.72,
+          "precision_at_5": 0.2,
+          "recall_at_5": 1.0,
+          "mrr_at_5": 1.0,
+          "ndcg_at_5": 1.0
+        }
+      ]
+    }
+  }
+}
