@@ -257,7 +257,6 @@ hybrid-search-rag/
 ├── README.md
 ├── ARCHITECTURE.md
 ├── EVALUATION.md
-├── .env.example
 ├── docker-compose.yml
 ├── requirements.txt
 │
@@ -271,8 +270,9 @@ hybrid-search-rag/
 │   │   ├── generation/
 │   │   ├── verification/
 │   │   ├── evaluation/
-│   │   └── db/
-│   │
+│   │   ├── db/
+│   │   └── .env.example
+│   │ 
 │   ├── tests/
 │   ├── alembic/
 │   └── evaluation/
