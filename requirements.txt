@@ -28,4 +28,4 @@ sentence-transformers
 openai
 python-multipart
 
-psycopg[binary]
+psycopg[binary]>=3.0
