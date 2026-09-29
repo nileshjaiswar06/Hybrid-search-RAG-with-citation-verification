@@ -27,3 +27,5 @@ sentence-transformers
 
 openai
 python-multipart
+
+psycopg[binary]
