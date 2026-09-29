@@ -1,4 +1,5 @@
 from html import escape
+from openai import OpenAI
 from typing import Protocol
 
 from google import genai
@@ -84,3 +85,56 @@ class GeminiCitationVerifier:
         return VerificationDecision.model_validate(
             response.parsed
         )
+
+class OpenAICitationVerifier:
+    """Uses OpenAI structured output for citation verification."""
+
+    def __init__(self, *, api_key: str | None = None) -> None:
+        key = api_key if api_key is not None else settings.openai_api_key
+
+        if not key:
+            raise ValueError(
+                "OPENAI_API_KEY is required for citation verification."
+            )
+
+        self.client = OpenAI(api_key=key)
+
+    def verify(
+        self,
+        claim: str,
+        evidence_excerpt: str,
+    ) -> VerificationDecision:
+        if not claim.strip():
+            raise ValueError("Claim cannot be empty.")
+
+        if not evidence_excerpt.strip():
+            raise ValueError("Evidence excerpt cannot be empty.")
+
+        response = self.client.responses.parse(
+            model=settings.openai_generation_model,
+            instructions=VERIFICATION_SYSTEM_INSTRUCTION,
+            input=(
+                f"<claim>\n{claim}\n</claim>\n\n"
+                f"<evidence>\n{evidence_excerpt}\n</evidence>"
+            ),
+            text_format=VerificationDecision,
+        )
+
+        if response.output_parsed is None:
+            raise RuntimeError(
+                "OpenAI verifier returned no structured result."
+            )
+
+        return response.output_parsed
+
+def get_citation_verifier() -> CitationVerifier:
+    if settings.verification_provider == "gemini":
+        return GeminiCitationVerifier()
+
+    if settings.verification_provider == "openai":
+        return OpenAICitationVerifier()
+
+    raise ValueError(
+        f"Unsupported verification provider: "
+        f"{settings.verification_provider}"
+    )

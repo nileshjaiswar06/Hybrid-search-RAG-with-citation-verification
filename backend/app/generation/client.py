@@ -1,5 +1,7 @@
 from typing import Protocol
 
+from openai import OpenAI
+
 from google import genai
 from google.genai import types
 
@@ -62,3 +64,48 @@ class GeminiTextGenerator:
             raise RuntimeError("Gemini returned an empty answer.")
 
         return answer
+
+class OpenAITextGenerator:
+    """Generates grounded answers with OpenAI."""
+
+    def __init__(self, *, api_key: str | None = None) -> None:
+        key = api_key if api_key is not None else settings.openai_api_key
+
+        if not key:
+            raise ValueError(
+                "OPENAI_API_KEY is required to generate answers."
+            )
+
+        self.client = OpenAI(api_key=key)
+
+    def generate(self, prompt: str) -> str:
+        response = self.client.responses.create(
+            model=settings.openai_generation_model,
+            instructions=SYSTEM_INSTRUCTION,
+            input=prompt,
+        )
+
+        answer = response.output_text.strip()
+
+        if not answer:
+            raise RuntimeError("OpenAI returned an empty answer.")
+
+        return answer
+
+def get_text_generator() -> TextGenerator:
+    if settings.generation_provider == "gemini":
+        return GeminiTextGenerator()
+
+    if settings.generation_provider == "openai":
+        return OpenAITextGenerator()
+
+    raise ValueError(
+        f"Unsupported generation provider: "
+        f"{settings.generation_provider}"
+    )
+
+def get_text_generator() -> TextGenerator:
+    if settings.generation_provider == "openai":
+        return OpenAITextGenerator()
+
+    return GeminiTextGenerator()

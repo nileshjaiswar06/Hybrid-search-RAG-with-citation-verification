@@ -1,3 +1,5 @@
+from openai import OpenAI
+
 from collections.abc import Sequence
 from typing import Protocol
 
@@ -74,3 +76,69 @@ class GeminiEmbeddingClient:
             )
 
         return vectors
+
+class OpenAIEmbeddingClient:
+    def __init__(self, *, api_key: str | None = None) -> None:
+        key = api_key if api_key is not None else settings.openai_api_key
+
+        if not key:
+            raise ValueError(
+                "OPENAI_API_KEY is required to generate embeddings."
+            )
+
+        self.client = OpenAI(api_key=key)
+
+    def embed_documents(
+        self,
+        texts: Sequence[str],
+    ) -> list[list[float]]:
+        if not texts:
+            return []
+
+        response = self.client.embeddings.create(
+            model=settings.openai_embedding_model,
+            input=list(texts),
+            dimensions=settings.embedding_dimensions,
+            encoding_format="float",
+        )
+
+        vectors = [
+            list(item.embedding)
+            for item in sorted(
+                response.data,
+                key=lambda item: item.index,
+            )
+        ]
+
+        if len(vectors) != len(texts):
+            raise RuntimeError(
+                "OpenAI returned an unexpected number of vectors."
+            )
+
+        if any(
+            len(vector) != settings.embedding_dimensions
+            for vector in vectors
+        ):
+            raise RuntimeError(
+                "OpenAI returned a vector with an unexpected dimension."
+            )
+
+        return vectors
+
+    def embed_queries(
+        self,
+        queries: Sequence[str],
+    ) -> list[list[float]]:
+        return self.embed_documents(queries)
+
+def get_embedding_client() -> EmbeddingClient:
+    if settings.embedding_provider == "gemini":
+        return GeminiEmbeddingClient()
+
+    if settings.embedding_provider == "openai":
+        return OpenAIEmbeddingClient()
+
+    raise ValueError(
+        f"Unsupported embedding provider: "
+        f"{settings.embedding_provider}"
+    )

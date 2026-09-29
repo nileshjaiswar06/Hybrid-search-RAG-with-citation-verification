@@ -3,7 +3,7 @@ from html import escape
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.generation.client import GeminiTextGenerator, TextGenerator
+from app.generation.client import TextGenerator, get_text_generator
 from app.generation.context import ContextBuilder
 from app.generation.models import BuiltContext, GeneratedAnswer
 from app.reranking.service import RerankingService
@@ -22,7 +22,7 @@ class GenerationService:
     ) -> None:
         self.reranking_service = reranking_service or RerankingService()
         self.context_builder = context_builder or ContextBuilder()
-        self.generator = generator or GeminiTextGenerator()
+        self.generator = generator or get_text_generator()
 
     def answer(self, question: str, db: Session) -> GeneratedAnswer:
         cleaned_question = question.strip()

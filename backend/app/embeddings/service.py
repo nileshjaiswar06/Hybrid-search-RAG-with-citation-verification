@@ -1,6 +1,12 @@
 import hashlib
 from datetime import datetime, timezone
 
+from app.embeddings.client import (
+    EmbeddingClient,
+    get_embedding_client,
+    prepare_document,
+)
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
@@ -21,7 +27,7 @@ class EmbeddingService:
         if batch_size <= 0:
             raise ValueError("batch_size must be positive")
 
-        self.client = client or GeminiEmbeddingClient()
+        self.client = client or get_embedding_client()
         self.batch_size = batch_size
 
     def embed_document(self, document_id: int, db: Session) -> int:

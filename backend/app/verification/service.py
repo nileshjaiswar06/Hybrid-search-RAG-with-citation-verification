@@ -1,7 +1,10 @@
 from sqlalchemy.orm import Session
 
 from app.generation.service import GenerationService, NO_ANSWER
-from app.verification.client import CitationVerifier, GeminiCitationVerifier
+from app.verification.client import (
+    CitationVerifier,
+    get_citation_verifier,
+)
 from app.verification.models import (ClaimCitationVerification, VerificationResult)
 from app.verification.parsing import extract_cited_claims
 
@@ -12,7 +15,7 @@ class CitationVerificationService:
             generation_service
             or GenerationService()
         )
-        self.verifier = verifier or GeminiCitationVerifier()
+        self.verifier = verifier or get_citation_verifier()
 
     def answer(self, question: str, db: Session) -> VerificationResult:
         generated = self.generation_service.answer(

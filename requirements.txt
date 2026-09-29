@@ -24,3 +24,6 @@ pgvector
 rank-bm25
 
 sentence-transformers
+
+openai
+python-multipart

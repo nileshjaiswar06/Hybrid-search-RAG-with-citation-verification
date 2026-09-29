@@ -3,14 +3,14 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.db.models import Chunk, ChunkEmbedding, Document, Page
-from app.embeddings.client import EmbeddingClient, GeminiEmbeddingClient
+from app.embeddings.client import EmbeddingClient, get_embedding_client
 from app.retrieval.models import RetrievedChunk
 
 class DenseRetrievalService:
     """Retrieves document chunks using cosine similarity."""
 
     def __init__(self, client: EmbeddingClient | None = None) -> None:
-        self.client = client or GeminiEmbeddingClient()
+        self.client = client or get_embedding_client()
 
     def search(self, query: str, db: Session, *, top_k: int | None = None) -> list[RetrievedChunk]:
         cleaned_query = query.strip()

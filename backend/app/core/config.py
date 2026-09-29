@@ -1,3 +1,5 @@
+from typing import Literal
+
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -9,9 +11,18 @@ class Settings(BaseSettings):
     database_url: str
 
     # BaseSettings reads GEMINI_API_KEY from the configured .env file.
-    gemini_api_key: str
+    gemini_api_key: str = ""
     gemini_model: str = "gemini-2.5-flash"
     gemini_embedding_model: str = "gemini-embedding-2"
+
+    openai_api_key: str = ""
+    openai_generation_model: str = "gpt-6-luna"
+    openai_embedding_model: str = "text-embedding-3-small"
+
+    embedding_provider: Literal["gemini", "openai"] = "gemini"
+    generation_provider: Literal["gemini", "openai"] = "gemini"
+    verification_provider: Literal["gemini", "openai"] = "gemini"
+
     embedding_dimensions: int = 768 
     dense_retrieval_default_top_k: int = 5
 
@@ -34,7 +45,7 @@ class Settings(BaseSettings):
     generation_max_output_tokens: int = 600
     generation_temperature: float = 0.2
 
-    verification_model: str = "gemini-2.5-flash"
+    verification_model: str = "gpt-6-luna"
     verification_max_output_tokens: int = 200       
 
     log_level: str = "INFO"
